@@ -226,14 +226,7 @@ namespace Payroll
             {
                 deduction = 60m;
             }
-            else
-            {
-                // Any invalid input will default to 0, and we will display the proper deduction code
-                deduction = 0m;
-                deductionCodeTextBox.Text = "D0";
-            }
             return deduction;
-
         }
     }
 }

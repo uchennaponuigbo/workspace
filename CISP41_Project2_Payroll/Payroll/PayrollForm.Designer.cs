@@ -52,6 +52,7 @@
             this.hoursWorkedValidLabel = new System.Windows.Forms.Label();
             this.hourlyRateValidLabel = new System.Windows.Forms.Label();
             this.titleLabel = new System.Windows.Forms.Label();
+            this.deductionCodeValidLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // employeeNameTextBox
@@ -273,11 +274,22 @@
             this.titleLabel.TabIndex = 32;
             this.titleLabel.Text = "Enter the values below to calculate the employee\'s pay. ";
             // 
+            // deductionCodeValidLabel
+            // 
+            this.deductionCodeValidLabel.AutoSize = true;
+            this.deductionCodeValidLabel.ForeColor = System.Drawing.Color.Red;
+            this.deductionCodeValidLabel.Location = new System.Drawing.Point(45, 428);
+            this.deductionCodeValidLabel.MaximumSize = new System.Drawing.Size(250, 44);
+            this.deductionCodeValidLabel.Name = "deductionCodeValidLabel";
+            this.deductionCodeValidLabel.Size = new System.Drawing.Size(0, 17);
+            this.deductionCodeValidLabel.TabIndex = 33;
+            // 
             // PayrollForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(688, 527);
+            this.Controls.Add(this.deductionCodeValidLabel);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.hourlyRateValidLabel);
             this.Controls.Add(this.hoursWorkedValidLabel);
@@ -335,6 +347,7 @@
         private System.Windows.Forms.Label hoursWorkedValidLabel;
         private System.Windows.Forms.Label hourlyRateValidLabel;
         private System.Windows.Forms.Label titleLabel;
+        private System.Windows.Forms.Label deductionCodeValidLabel;
     }
 }
 
