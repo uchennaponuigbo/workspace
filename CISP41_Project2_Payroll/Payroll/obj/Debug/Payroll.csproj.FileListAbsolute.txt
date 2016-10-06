@@ -1,0 +1,18 @@
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\bin\Debug\Payroll.exe.config
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\bin\Debug\Payroll.exe
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\bin\Debug\Payroll.pdb
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\obj\Debug\Payroll.csprojResolveAssemblyReference.cache
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\obj\Debug\Payroll.PayrollForm.resources
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\obj\Debug\Payroll.Properties.Resources.resources
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\obj\Debug\Payroll.csproj.GenerateResource.Cache
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\obj\Debug\Payroll.exe
+c:\users\bonuigbo\documents\visual studio 2015\Projects\cisp41_project2_payroll\cisp41_project2_payroll\obj\Debug\Payroll.pdb
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\bin\Debug\Payroll.exe.config
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\obj\Debug\Payroll.exe
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\obj\Debug\Payroll.pdb
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\obj\Debug\Payroll.csprojResolveAssemblyReference.cache
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\obj\Debug\Payroll.PayrollForm.resources
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\obj\Debug\Payroll.Properties.Resources.resources
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\obj\Debug\Payroll.csproj.GenerateResource.Cache
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\bin\Debug\Payroll.exe
+C:\OProject\Github\uchenna_workspace\workspace\CISP41_Project2_Payroll\Payroll\bin\Debug\Payroll.pdb
