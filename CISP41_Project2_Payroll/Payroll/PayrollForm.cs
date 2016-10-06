@@ -33,64 +33,28 @@ namespace Payroll
 
         private void calculateButton_Click(object sender, EventArgs e)
         {
-            // Clear out validation messages
-            employeeNameValidLabel.Text = "";
-            hourlyRateValidLabel.Text = "";
-            hoursWorkedValidLabel.Text = "";
+            clearValidationMessages();
 
-            bool formIsValid = true;
-
-            employeeNameValidLabel.Text = "";
             string employeeName = employeeNameTextBox.Text;
 
             // Validate that the employee is filled in properly
             if (employeeNameTextBox.Text == "")
             {
                 employeeNameValidLabel.Text = "Please enter an employee name";
-                formIsValid = false;
             }
 
-            // Validate that the hours are proper
+            // Validate that the hours are valid
             int hoursWorked;
             bool hoursWorkedIsValid = Int32.TryParse(hoursWorkedTextBox.Text, out hoursWorked);
+            hoursWorkedValidLabel.Text = getHoursWorkedValidation(hoursWorked, hoursWorkedIsValid);
 
-            if (hoursWorkedTextBox.Text == "")
-            {
-                hoursWorkedValidLabel.Text = "Please enter the number of hours worked";
-                formIsValid = false;
-            }
-            else if (!hoursWorkedIsValid)
-            {
-                hoursWorkedValidLabel.Text = "Please enter a valid number for number of hours worked.";
-                formIsValid = false;
-            }
-            else if (hoursWorked > 70 || hoursWorked < 5)
-            {
-                hoursWorkedValidLabel.Text = "The hours must be between 5 and 70.";
-                formIsValid = false;
-            }
-
-            // Validate that the hourly rate is proper
+            // Validate that the hourly rate is valid
             decimal hourlyRate;
             bool hourlyRateIsValid = Decimal.TryParse(hourlyRateTextBox.Text, out hourlyRate);
-            if (hourlyRateTextBox.Text == "")
-            {
-                hourlyRateValidLabel.Text = "Please enter the rate.";
-                formIsValid = false;
-            }
-            else if (!hourlyRateIsValid)
-            {
-                hourlyRateValidLabel.Text = "Please enter a valid number for the rate.";
-                formIsValid = false;
-            }
-            else if (hourlyRate < MinimunWage)
-            {
-                hourlyRateValidLabel.Text = "The rate must be greater than 9.25.";
-                formIsValid = false;
-            }
+            hourlyRateValidLabel.Text = getHourlyRateValidation(hourlyRate, hourlyRateIsValid); 
 
-            // Do not process anything if the fields above are invalid
-            if (!formIsValid)
+            // Do not process anything if the error messages are not empty
+            if (hourlyRateValidLabel.Text != "" || hoursWorkedValidLabel.Text != "" || employeeNameValidLabel.Text != "")
             {
                 return;
             }
@@ -112,52 +76,25 @@ namespace Payroll
             taxesTextBox.Text = taxes.ToString("N2");
             netPayTextBox.Text = netPay.ToString("N2");
 
-            // Finally, update all the total values
+            // Update all the total values
             _totalEmployeesProcessed++;
             _totalGrossPay += grossPay;
             _totalDeduction += deduction;
             _totalTaxes += taxes;
             _totalNetPay += netPay;
 
-            // Optional - update employee summary info
+            // Update employee summary info
             _employeeSummaryInfo.Add(employeeName + ": ".PadRight(30 - employeeName.Length, ' ') + netPay.ToString("N2"));
         }
 
-        private decimal calculateDeduction(string deductionCode)
-        {
-            // This is the default value, if the user enters anything not valid, or D0
-            decimal deduction = 0m;
-            if (deductionCodeTextBox.Text == "D1")
-            {
-                deduction = 10m;
-            }
-            else if (deductionCodeTextBox.Text == "D2")
-            {
-                deduction = 30m;
-            }
-            else if (deductionCodeTextBox.Text == "D3")
-            {
-                deduction = 60m;
-            }
-            else
-            {
-                // Any invalid input will default to 0, and we will display the proper deduction code
-                deduction = 0m;
-                deductionCodeTextBox.Text = "D0";
-            }
-            return deduction;
-
-        }
         private void clearButton_Click(object sender, EventArgs e)
         {
+            clearValidationMessages();
+
             employeeNameTextBox.Text = "";
             hoursWorkedTextBox.Text = "";
             hourlyRateTextBox.Text = "";
             deductionCodeTextBox.Text = "";
-
-            employeeNameValidLabel.Text = "";
-            hourlyRateValidLabel.Text = "";
-            hoursWorkedValidLabel.Text = "";
 
             grossPayTextBox.Text = "";
             deductionTextBox.Text = "";
@@ -180,20 +117,70 @@ namespace Payroll
         private void summaryButton_Click(object sender, EventArgs e)
         {
             var messageString = "";
-            messageString += "# of Processed Employees: " + _totalEmployeesProcessed.ToString();
+            messageString += "Total Processed Employees: " + _totalEmployeesProcessed.ToString();
             messageString += "\nTotal Gross Pay: " + _totalGrossPay.ToString("N2");
             messageString += "\nTotal Deduction: " + _totalDeduction.ToString("N2");
             messageString += "\nTotal Taxes: " + _totalTaxes.ToString("N2");
             messageString += "\nTotal Net Pay: " + _totalNetPay.ToString("N2");
             messageString += "\n\n";
 
-            for(int i = 0; i < _employeeSummaryInfo.Count; i++)
+            _employeeSummaryInfo.Sort();
+
+            for (int i = 0; i < _employeeSummaryInfo.Count; i++)
             {
                 messageString += "\n" + _employeeSummaryInfo[i];
             }
 
             MessageBox.Show(messageString, "Summary", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void clearValidationMessages()
+        {
+            employeeNameValidLabel.Text = "";
+            hourlyRateValidLabel.Text = "";
+            hoursWorkedValidLabel.Text = "";
+        }
+
+        private string getHoursWorkedValidation(int hoursWorked, bool hoursWorkedIsValid)
+        {
+            if (hoursWorkedTextBox.Text == "")
+            {
+                return "Please enter the number of hours worked";
+            }
+            else if (!hoursWorkedIsValid)
+            {
+                return "Please enter a valid number for number of hours worked.";
+            }
+            else if (hoursWorked > 70 || hoursWorked < 5)
+            {
+                return "The hours must be between 5 and 70.";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private string getHourlyRateValidation(decimal hourlyRate, bool hourlyRateIsValid)
+        {            
+            if (hourlyRateTextBox.Text == "")
+            {
+                return "Please enter the rate.";
+            }
+            else if (!hourlyRateIsValid)
+            {
+                return "Please enter a valid number for the rate.";
+            }
+            else if (hourlyRate < MinimunWage)
+            {
+                return "The rate must be greater than 9.25.";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         private decimal calculateGrossPay(int hoursWorked, decimal hourlyRate)
         {
             int overTimeHours = hoursWorked - 40;
@@ -221,6 +208,32 @@ namespace Payroll
             decimal grossPay = regularHoursPay + overTimePay + doubleOverTimePay;
 
             return grossPay;
+        }
+
+        private decimal calculateDeduction(string deductionCode)
+        {
+            // This is the default value, if the user enters anything not valid, or D0
+            decimal deduction = 0m;
+            if (deductionCodeTextBox.Text == "D1")
+            {
+                deduction = 10m;
+            }
+            else if (deductionCodeTextBox.Text == "D2")
+            {
+                deduction = 30m;
+            }
+            else if (deductionCodeTextBox.Text == "D3")
+            {
+                deduction = 60m;
+            }
+            else
+            {
+                // Any invalid input will default to 0, and we will display the proper deduction code
+                deduction = 0m;
+                deductionCodeTextBox.Text = "D0";
+            }
+            return deduction;
+
         }
     }
 }

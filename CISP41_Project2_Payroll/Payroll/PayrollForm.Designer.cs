@@ -51,6 +51,7 @@
             this.employeeNameValidLabel = new System.Windows.Forms.Label();
             this.hoursWorkedValidLabel = new System.Windows.Forms.Label();
             this.hourlyRateValidLabel = new System.Windows.Forms.Label();
+            this.titleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // employeeNameTextBox
@@ -86,6 +87,7 @@
             // 
             this.grossPayTextBox.Location = new System.Drawing.Point(399, 111);
             this.grossPayTextBox.Name = "grossPayTextBox";
+            this.grossPayTextBox.ReadOnly = true;
             this.grossPayTextBox.Size = new System.Drawing.Size(186, 22);
             this.grossPayTextBox.TabIndex = 6;
             // 
@@ -94,6 +96,7 @@
             this.taxesTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.taxesTextBox.Location = new System.Drawing.Point(399, 202);
             this.taxesTextBox.Name = "taxesTextBox";
+            this.taxesTextBox.ReadOnly = true;
             this.taxesTextBox.Size = new System.Drawing.Size(186, 22);
             this.taxesTextBox.TabIndex = 7;
             // 
@@ -101,12 +104,13 @@
             // 
             this.deductionTextBox.Location = new System.Drawing.Point(399, 303);
             this.deductionTextBox.Name = "deductionTextBox";
+            this.deductionTextBox.ReadOnly = true;
             this.deductionTextBox.Size = new System.Drawing.Size(186, 22);
             this.deductionTextBox.TabIndex = 8;
             // 
             // netPayTextBox
             // 
-            this.netPayTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.netPayTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.netPayTextBox.ForeColor = System.Drawing.Color.Green;
             this.netPayTextBox.Location = new System.Drawing.Point(399, 403);
             this.netPayTextBox.Name = "netPayTextBox";
@@ -188,12 +192,17 @@
             // 
             // calculateButton
             // 
+            this.calculateButton.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.calculateButton.FlatAppearance.BorderSize = 0;
+            this.calculateButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Teal;
+            this.calculateButton.ForeColor = System.Drawing.Color.White;
             this.calculateButton.Location = new System.Drawing.Point(46, 466);
+            this.calculateButton.Margin = new System.Windows.Forms.Padding(0);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(124, 28);
             this.calculateButton.TabIndex = 25;
             this.calculateButton.Text = "Calculate";
-            this.calculateButton.UseVisualStyleBackColor = true;
+            this.calculateButton.UseVisualStyleBackColor = false;
             this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
             // 
             // clearButton
@@ -254,11 +263,22 @@
             this.hourlyRateValidLabel.Size = new System.Drawing.Size(0, 17);
             this.hourlyRateValidLabel.TabIndex = 31;
             // 
+            // titleLabel
+            // 
+            this.titleLabel.AutoSize = true;
+            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.titleLabel.Location = new System.Drawing.Point(45, 32);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(494, 25);
+            this.titleLabel.TabIndex = 32;
+            this.titleLabel.Text = "Enter the values below to calculate the employee\'s pay. ";
+            // 
             // PayrollForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(688, 527);
+            this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.hourlyRateValidLabel);
             this.Controls.Add(this.hoursWorkedValidLabel);
             this.Controls.Add(this.employeeNameValidLabel);
@@ -314,6 +334,7 @@
         private System.Windows.Forms.Label employeeNameValidLabel;
         private System.Windows.Forms.Label hoursWorkedValidLabel;
         private System.Windows.Forms.Label hourlyRateValidLabel;
+        private System.Windows.Forms.Label titleLabel;
     }
 }
 
