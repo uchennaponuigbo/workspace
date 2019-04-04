@@ -1,0 +1,3 @@
+﻿  Big Integers.cpp
+c:\users\uchenna\source\repos\big integers\big integers\big integers.cpp(124): warning C4715: 'toIntArray': not all control paths return a value
+  Big Integers.vcxproj -> C:\Users\Uchenna\source\repos\Big Integers\Debug\Big Integers.exe
