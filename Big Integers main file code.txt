@@ -1,0 +1,144 @@
+/*  Program: Big Int Class
+	Author: Uchenna Onuigbo
+	Class: CSCI 140
+	Date: 4/27/19
+	Description: Perform addition and subtraction with an array of integers in an object oriented way
+
+	I certify that the code below is my own work.
+
+	Exception(s): N/A
+
+*/
+//#include "pch.h"
+//#include "BigInt.h"
+#include <iostream>
+#include<string>
+using namespace std;
+
+const int Max_Digits = 20;
+//void startProgram();
+bool toIntArray(string convert, int numConvert[]); 
+bool addIntArray(const int[], const int[], int[]);
+void subIntArray(const int[], const int[], int[]);
+void printArray(const int[]);
+int main()
+{
+	//BigInt result = first.add(second);
+	string expr1 = "";
+	string expr2 = "";
+	int value1[Max_Digits] = {0};
+	int value2[Max_Digits] = { 0 };
+	int total[Max_Digits] = { 0 };
+	cin >> expr1;
+	 
+	toIntArray(expr1, value1); 
+	cin >> expr2;
+	toIntArray(expr2, value2);
+	// the value has been changed after this point
+	bool x = addIntArray(value1, value2, total);
+	if (x == false)
+	{
+		
+		cout << "The sum of ";
+		cout << expr1 << " + " << expr2 << " = ";
+		printArray(total);
+	}
+	total[Max_Digits] = { 0 }; //using same total from before, so change to 0
+	cout << endl;
+	subIntArray(value1, value2, total);
+	cout << "The difference of ";
+	cout << expr1 << " - " << expr2 << " = ";
+	printArray(total);
+	
+
+	/*cout << "You entered " << expr1 << endl;
+	if (expr1.size > Max_Digits)
+		cout << "Too many numbers" << endl;*/
+
+	return 0;
+}
+
+bool toIntArray(string convert, int numConvert[])
+{
+	int strLen = convert.length();
+	bool valid = false;
+	for (int i = 0; convert[i] != '\0'; i++)
+	{
+		char currentChar = convert.at(i);
+		if (currentChar<(char)'0' || currentChar>(char)'9')
+		{
+			cout << "Error! Invalid Characters!" << endl;
+			break;
+			valid = false;
+			
+		}
+		else
+		{
+			numConvert[Max_Digits - (strLen - i)] = convert[i] - '0';
+			valid = true;
+			
+		}
+	}
+	
+	//if (valid == true) //output to verify corrections
+	//{
+	//	cout << "Converted to array" << endl;
+	//	for (int j = 0; j < Max_Digits; j++)
+	//		cout << numConvert[j];
+	//	cout << endl;
+	//}
+	return valid;	
+}
+
+bool addIntArray(const int add1[], const int add2[], int sum[])
+{
+	bool overflow = false;
+	int carry = 0;
+	for (int i = Max_Digits - 1; i >= 0; i--)
+	{
+		int num = add1[i] + add2[i] + carry;
+		sum[i] = num % 10;
+		carry = num / 10;
+
+		if (i == 0 && carry > 0)
+			overflow = true;
+	}
+	return overflow;
+}
+
+void subIntArray(const int sub1[], const int sub2[], int diff[])
+{
+	int borrow = 0;
+	for (int i = Max_Digits - 1; i >= 0; i--)
+	{
+		int num = sub1[i] - sub2[i] - borrow;
+		if (num < 0)
+		{
+			num += 10;
+			borrow++;
+		}
+		diff[i] = num;
+	}
+}
+
+void printArray(const int print[])
+{
+	for (int i = 0; i < Max_Digits; i++)
+		cout << print[i];
+}
+
+//void startProgram()
+
+
+//MUTATOR FUNCTIONS ARE USED TO CHANGE MEMBER VARIABLES
+
+//http://www.cplusplus.com/forum/beginner/154852/
+//http://www.cplusplus.com/forum/beginner/110671/
+//https://sourceforge.net/projects/cpp-bigint/
+//https://github.com/topics/biginteger?l=c%2B%2B
+
+//returns string value like "1234", used like cout << ClassVar.getValue(); in main
+
+BigInt first(expr1); //first, stores the variable in default constructor
+	BigInt second(expr2);
+	bool x = first.setValue(expr1); //with the variable stored, the constructor is stored as variable in main.

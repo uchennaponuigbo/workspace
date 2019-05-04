@@ -1,0 +1,86 @@
+#include<iostream>
+
+using namespace std;
+
+class Length
+{
+private: 
+	int totalInches;
+public:
+	Length(int ft = 0, int in = 0) {
+		setLength(ft, in);
+	}
+
+	int getFeet() const
+	{
+		return totalInches % 12;
+	}
+	int getInches() const
+	{
+		return totalInches / 12;
+	}
+	Length &setLength(int ft, int in)
+	{
+		totalInches = ft * 12 + in;
+		return *this; //needed for & sign, you return the original value instead of a copy
+	}
+
+	Length add(const Length&r) const
+	{
+		Length result; //local variable
+		result.totalInches = totalInches + r.totalInches; // L1 = L2 + L3; 24 + 17
+		return result; //the copy is sent to L1 in main.
+
+		//in project 3, length is replaced with BigInt.
+		//result.value 3rd array
+		//value 2nd array
+		//r.value 1st array
+
+		//there's a chance for overflow, however.
+		//throwing an exception can fix this.
+
+		//result. valid. return true if good, false if overflow, send to main
+		//v1 = v2.add(v3)
+		//if(v1.isValid()) ...
+	}
+
+	friend Length sub(const Length &l, const Length &r)
+	{
+		//friend functions are not member functions, so no "::" in app file
+		Length result;
+		result.totalInches = l.totalInches - r.totalInches;
+		//friend functions access private data
+		return result;
+	}
+
+	bool equal(const Length&r) const
+	{
+		return totalInches == r.totalInches;
+		//Hint: in project 3, can reuse other operations to make the comparison 1 line of code
+	}
+};
+
+int main()
+{
+	
+	Length L1; //0
+	Length L2(2); // 24
+	Length L3(1, 2); //17
+
+	cout << L1.setLength(3, 6).getInches(); //output is 42
+
+	L1 = L2.add(L3); //L2 + L3, result is stored in L1;
+	cout << "L1: " << L1.getInches() << " " << L1.getFeet() << endl; // 38 2
+	L1 = sub(L2, L3);
+	cout << "L1 sub: " << L1.getInches() << " " << L1.getFeet() << endl; //10 10
+
+	//or L1.print(), if constructor is available.
+	//or cout << L1 << endl; if you overload the operator 
+	//In class, operator<<(cout, &L1) as a friend function, cout.operator<<(&L1) doesn't work because it's a part of the ostream class
+
+	if (L1.equal(L2))
+	{
+		//...
+	}
+	
+}
