@@ -9,7 +9,8 @@
 	Exception(s): N/A
 */
 #include <iostream>
-#include<iomanip>
+#include <iomanip>
+#include <string>
 using namespace std;
 
 struct Coin
@@ -17,125 +18,232 @@ struct Coin
 	int quarter, dime, nickel;
 };
 
+bool makeChanges(int amount, Coin &machine, Coin &back);
+string getBalanceString(Coin& coin, int dollars);
+void printFinalReport(int validTransactions, int insertedDollars, Coin &machine);
+void initializeMachine(Coin &machine);
+
 int main()
 {
-	cout << "Author: Uchenna Onuigbo\n";
-	cout << "Vending Machine Version 1" << endl;
-	
-	int purchaseAmount = 0;
-	cout << "Fill up machine with changes. Please wait... \n";
-	cout << "Enter the # of quarters, dimes and nickels in this order." << endl;
-	//makeChanges(purchaseAmount,)
+	Coin machine;
+	int insertedDollars = 0;
+	int purchaseAmount = -1;
+	int amount = -1;
+	int validTransactions = 0;
+
+	initializeMachine(machine);
+
+	while (purchaseAmount != 0)
+	{
+		Coin back;
+		int insertedQuarters = 0;
+		int insertedDimes = 0;
+		int insertedNickels = 0;
+		int insertedTotal = 0;
+		int option = 0;
+		string optionString = "dollar";
+
+		cout << "Enter the purchase amount [0 - 100]." << endl;
+		cin >> purchaseAmount;
+
+		if (purchaseAmount == 0)
+		{
+			printFinalReport(validTransactions, insertedDollars, machine);
+			break;
+		}
+
+		cout << "You entered a purchase amount of " << purchaseAmount << " cent(s)." << endl;
+
+		if (purchaseAmount > 100)
+		{
+			cout << "Invalid amount (outside valid range). Try again." << endl;
+			continue;
+		}
+
+		if (purchaseAmount % 5 != 0)
+		{
+			cout << "Invalid amount (not a multiple of 5). Try again." << endl;
+			continue;
+		}
+
+		while (option != 1 && option != 2)
+		{
+			cout << "Select an option, 1 for dollar bill, 2 for coins" << endl;
+			cin >> option;
+		}		
+
+		switch (option)
+		{
+		case 1:
+			insertedTotal = 100;
+			insertedDollars++;
+			cout << "You entered an amount of 100." << endl;
+			break;
+
+		case 2:
+			optionString = "coins";
+			int currentAmount = -1;
+			int totalAmount = 0;
+
+			cout << "Please insert your coins." << endl;
+
+			while (currentAmount != 0 && insertedTotal < 100)
+			{
+				cin >> currentAmount;
+
+				switch (currentAmount)
+				{
+				case 25:
+					insertedTotal += currentAmount;
+					insertedQuarters++;
+					break;
+				case 10:
+					insertedTotal += currentAmount;
+					insertedDimes++;
+					break;
+				case 5:
+					insertedTotal += currentAmount;
+					insertedNickels++;
+					break;
+				default:
+					break;
+				}
+			}
+
+			cout << "You entered an amount of " << insertedTotal << " cents." << endl;
+			break;
+		}
+
+		if (insertedTotal < purchaseAmount)
+		{
+			cout << "Insufficient amount." << endl;
+			cout << "Your transaction cannot be processed." << endl;
+			continue;
+		}
+		else
+		{
+			machine.quarter += insertedQuarters;
+			machine.dime += insertedDimes;
+			machine.nickel += insertedNickels;
+		}
+
+		cout << "Processing your purchase ..." << endl;
+
+		int amount = insertedTotal - purchaseAmount;
+		bool areChangesValid = makeChanges(amount, machine, back);
+
+		if (areChangesValid)
+		{
+			validTransactions++;
+			int totalChange = back.quarter * 25 + back.nickel * 5 + back.dime * 10;
+
+			cout << "Your change of " << totalChange << " is given as:" << endl;
+			cout << "    quarters: " << back.quarter << endl;
+			cout << "    dimes: " << back.dime << endl;
+			cout << "    nickels: " << back.nickel << endl;
+		}
+		else
+		{
+			cout << "Insufficient changes." << endl;
+			cout << "Your transaction cannot be processed." << endl;
+			cout << "Please take back your " << optionString << "." << endl;
+
+			machine.quarter -= insertedQuarters;
+			machine.dime -= insertedDimes;
+			machine.nickel -= insertedNickels;
+		}
+
+		cout << endl;
+	}
+
+	cin >> amount;
+
 	return 0;
 }
 
-bool isDivisable(int number1, int number2)
-{
-	bool valid = true;
-		if(number1 % number2 != 0)
-		{
-			valid = false;
-			return valid;
-		}
-	return valid;
+string getBalanceString(Coin& coin, int dollars) {
+	int balance = (25 * coin.quarter) + (10 * coin.dime) + (5 * coin.nickel);
+	int currentDollars = dollars + (balance / 100);
+	int cents = balance % 100;
+	string centsString = to_string(cents);
+
+	if (centsString.length() < 2) {
+		centsString += "0";
+	}
+
+	return "$" + to_string(currentDollars) + "." + to_string(cents);
 }
 
-bool isWithinRange(int max, int min, int value)
-{
-	bool valid = true;
-	if (value > max || value < min)
-	{
-		valid = false;
-		return valid;
-	}
-	return valid;
-}
 
 bool makeChanges(int amount, Coin &machine, Coin &back)
 {
-	//I could also make the function void, and add makeChanges as a parameter
+	int initialNumberOfQuarters = machine.quarter;
+	int initialNumberOfDimes = machine.dime;
+	int initialNumberOfNickels = machine.nickel;
 
-	// amount - change amount to give back
-	// machine - current quarters, dimes, and nickels in machine
-	//back - quarters, dimes, and nickels to give back
-	//return true for sufficient changes else return false otherwise
+	back.quarter = 0;
+	back.dime = 0;
+	back.nickel = 0;
 
-	int userCoins = 0; //might use for switch statement to calculate total
-	int numberOfTransactions = 0;
-	float machineBalance = 0;
-	cin >> machine.quarter;
-	cin >> machine.dime;
-	cin >> machine.nickel;
+	int remainingAmount = amount;
 
-	cout << fixed << showpoint << setprecision(2);
-	float quarterValue = machine.quarter * 0.25;
-	float dimeValue = machine.dime * 0.10;
-	float nickelValue = machine.nickel * 0.05;
-	machineBalance = quarterValue + dimeValue + nickelValue;
-
-	cout << "You have entered " << machine.quarter << " quarter(s),"
-		<< machine.dime << " dime(s), " << "and " << machine.nickel << " nickels.\n";
-	cout << "The balance in the machine is " << machineBalance << endl;
-	cout << "Only a purchase amount from 0-100 in multiples of 5 will be accepted.\n";
-	cout << "For purchase, only a One Dollar bill or coins will be accepted.\n";
-	cout << "Enter 0 to stop the program. The machine is ready to operate." << endl;
-
-	cout << "Enter the purchase amount from 0-100 cents" << endl;
-	//amount represents the change to give back. change this variable
-	cin >> amount;
-	
-	bool divide = isDivisable(amount, 5);
-	bool range = isWithinRange(100, 0, amount);
-
-	while (!(divide))
+	while (remainingAmount >= 25 && machine.quarter > 0)
 	{
-		cout << "This value is not divisble by five. Please enter from 0-100 in multiples of 5." << endl;
-		cin >> amount;
-	}
-	while (!(range))
-	{
-		cout << "That is not valid. Please enter from 0-100 in multiples of 5." << endl;
-		cin >> amount;
+		remainingAmount -= 25;
+		back.quarter++;
+		machine.quarter--;
 	}
 
-	while (amount != 0)
+	while (remainingAmount >= 10 && machine.dime > 0)
 	{
-		cout << "You have entered " << amount << endl;
-		//maybe use a switch statement for the dollar bill and coins option.
-		cout << "Select an option, 1 for dollar bill, 2 for coins" << endl;
-		//might need to do a nested while loop for this transaction
-		/*int coinsBill;
-		cin >> coinsBill;*/
-		switch (amount)
-		{
-		case 1:
-		{
-			//cout << fixed << showpoint << setprecision(2);
-			//The program will insert 4 coin choices and output the total. Then the program will check if
-			//the machine can give sufficent change or not. Must make sure that the change can be given back
-			//can't give back change that doesn't exist
-			// int x = back.quarter
-		}
-		case 2:
-		{
-			//cout << fixed << showpoint << setprecision(2);
-			//The programm will insert a dollar bill (1.00 float value), then determine if it can give sufficent change or not
-		}
-		default: cout << "Please enter the right option. Dollar Bill (1) or Coins (2)." << endl;
-			numberOfTransactions++;
-		}
-
-		if (amount == 0) // generates final report
-		{
-			cout << "Here is the final report.\n";
-			//cout << "There are " << (variable here) << " transactions.\n";
-			//cout << "Dollars: " << (variable here) << endl;
-			cout << "Quarters: " << machine.quarter << endl;
-			cout << "Dimes: " << machine.dime << endl;
-			cout << "Nickels: " << machine.nickel << endl;
-			//cout << "Machine Balance: " << (machineBalance) << endl;
-			cout << "Thank you for using. Initiating shut down..." << endl;
-		}
+		remainingAmount -= 10;
+		back.dime++;
+		machine.dime--;
 	}
+
+	while (remainingAmount >= 5 && machine.nickel > 0)
+	{
+		remainingAmount -= 5;
+		back.nickel++;
+		machine.nickel--;
+	}
+
+	if (remainingAmount == 0)
+	{
+		return true;
+	}
+
+	machine.quarter = initialNumberOfQuarters;
+	machine.dime = initialNumberOfDimes;
+	machine.nickel = initialNumberOfNickels;
+
 	return false;
+}
+
+void initializeMachine(Coin &machine)
+{
+	cout << "Author: Uchenna Onuigbo\n";
+	cout << "Vending Machine Version 1" << endl;
+	cout << "Fill up machine with changes. Please wait..." << endl;
+	cout << "Enter the # of quarters, dimes and nickels in this order." << endl;
+	cin >> machine.quarter >> machine.dime >> machine.nickel;
+	cout << "There are " << machine.quarter << " quarter(s), " << machine.dime << " dime(s), and " << machine.nickel << " nickle(s)." << endl;
+	cout << "Initial machine balance is " << getBalanceString(machine, 0) << "." << endl;
+	cout << "One-dollar bill or coins will be accepted." << endl;
+	cout << "Only amount between 0 and 100 and multiple of 5 is accepted." << endl;
+	cout << "Enter 0 to stop the program." << endl;
+	cout << "Machine is now ready." << endl;
+	cout << endl;
+}
+
+void printFinalReport(int validTransactions, int insertedDollars, Coin &machine)
+{
+	cout << "Final report is being generated ..." << endl;
+	cout << "There are " << validTransactions << " valid transactions." << endl;
+	cout << "Number of dollars: " << insertedDollars << endl;
+	cout << "Number of quarters: " << machine.quarter << endl;
+	cout << "Number of dimes: " << machine.dime << endl;
+	cout << "Number of nickles: " << machine.nickel << endl;
+	cout << "Machine balance: " << getBalanceString(machine, insertedDollars) << endl;
+	cout << "Machine is shutting down." << endl;
 }
