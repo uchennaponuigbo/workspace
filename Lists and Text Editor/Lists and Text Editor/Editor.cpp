@@ -9,6 +9,7 @@ Editor::Editor(string w)
 {	
 	this->cursor = '>';
 	setEdittingWord(w);	
+	it = list.end();
 }
 
 /*private*/ void Editor::setEdittingWord(string w)
@@ -16,13 +17,8 @@ Editor::Editor(string w)
 	for (int i = 0; i < w.length(); i++)
 	{
 		list.insertBack(w[i]);
-	}
-	
+	}	
 }
-
-/*NodeList list;
-	list.insertFront('a');
-	cout << list.atIndex(0) << " " << list.indexOf('a'); //outputs a 0*/
 
 void Editor::moveLeft() //1
 {
@@ -33,8 +29,6 @@ void Editor::moveLeft() //1
 	}
 	
 	--it;
-	//*it = list.indexOf(cursor);
-	//cout << list.indexOf(cursor); //= *it;
 	cout << "Moved cursor left.";
 }
 
@@ -58,31 +52,27 @@ void Editor::insertChar(char c) //3
 
 void Editor::deleteChar() //4
 {
-	if (it == list.begin())
+	if (it == list.begin()) //*it > list.size() 
 	{
 		cout << "Unable to delete character.";
 		return;
 	}
-	//--it;
-	list.erase(--it); //goes back to end of the list after deleting at current position for some reason
+	--it;
+	list.erase(it);
 	cout << "Deleted one character.";	
 }
 
 
 void Editor::getCurPos() //5
 {
-	/*if (it == list.end())
-	{
-		cout << list.indexOf(*it);
-	}*/
-	cout << "Current position: " << list.indexOf(*it); //current position H (after moving to position 0 from option 6)
+	cout << "Current position: " << list.indexOf(*it);
 }
 
 void Editor::goToPos(int i) //6
 {
-	if (!(i >= 0 && i <= list.size())) //wordLength
+	if (!(i >= 0 && i <= list.size()))
 	{
-		cout << "Invalid Position." << endl;
+		cout << "Invalid Position.";
 		return;
 	}
 		

@@ -7,7 +7,7 @@ private:
 
 	char cursor;
 	NodeList list;
-	NodeList::Iterator it = list.end();
+	NodeList::Iterator it = list.begin();
 
 	void setEdittingWord(std::string);
 public:
