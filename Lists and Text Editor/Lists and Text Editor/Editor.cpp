@@ -8,16 +8,11 @@ using namespace std;
 Editor::Editor(string w)
 {	
 	this->cursor = '>';
-	setEdittingWord(w);
-	list.insertBack(cursor);
-	//it = list.end();
-	
+	setEdittingWord(w);	
 }
 
 /*private*/ void Editor::setEdittingWord(string w)
 {
-	//this->word = w;
-	//this->wordLength = w.length();
 	for (int i = 0; i < w.length(); i++)
 	{
 		list.insertBack(w[i]);
@@ -31,64 +26,72 @@ Editor::Editor(string w)
 
 void Editor::moveLeft() //1
 {
-	if (*it == 0) //list.begin()
+	if (it == list.begin())
 	{
-		cout << "Cursor is at the beginning." << endl; 
+		cout << "Cursor is at the beginning."; 
 		return;
 	}
 	
 	--it;
-	cout << list.indexOf(cursor); //= *it;
-	cout << "Moved cursor left." << endl;
+	//*it = list.indexOf(cursor);
+	//cout << list.indexOf(cursor); //= *it;
+	cout << "Moved cursor left.";
 }
 
 void Editor::moveRight() //2
 {
-	if (*it == list.size()) //list.end()
+	if (it == list.end())
 	{
-		cout << "Cursor is at the end." << endl;
+		cout << "Cursor is at the end.";
 		return;
 	}
 	
 	++it;
-	cout << "Moved cursor right." << endl;
+	cout << "Moved cursor right.";
 }
 
 void Editor::insertChar(char c) //3
 {
-	//wordLength++;
-	list.insert(--it, c);
-	cout << "Inserted the Character " << c << endl;	
+	list.insert(it, c);
+	cout << "Inserted the Character " << c;	
 }
 
 void Editor::deleteChar() //4
 {
-	--it;
-	list.erase(--it);
-	//wordLength--;
-	cout << "Deleted one character." << endl;	
+	if (it == list.begin())
+	{
+		cout << "Unable to delete character.";
+		return;
+	}
+	//--it;
+	list.erase(--it); //goes back to end of the list after deleting at current position for some reason
+	cout << "Deleted one character.";	
 }
 
 
 void Editor::getCurPos() //5
 {
-	//if >hello world, index of h would be 0;
-	//return list.indexOf(0);
-	
-	cout << "Current position: " << *it;
+	/*if (it == list.end())
+	{
+		cout << list.indexOf(*it);
+	}*/
+	cout << "Current position: " << list.indexOf(*it); //current position H (after moving to position 0 from option 6)
 }
 
 void Editor::goToPos(int i) //6
 {
 	if (!(i >= 0 && i <= list.size())) //wordLength
+	{
+		cout << "Invalid Position." << endl;
 		return;
+	}
+		
 	for (/*NodeList::Iterator it2*/ it = list.begin(); it != list.end(); ++it) 
 	{
-		if (i == list.indexOf(cursor))
+		if (i == list.indexOf(*it))
 		{
 			//list.atIndex(*it);
-			//code that moves the cursor there
-			cout << "Moved to Position " << i << endl;
+			cout << "Moved to Position " << i;
 			break;
 		}
 			
@@ -97,7 +100,7 @@ void Editor::goToPos(int i) //6
 
 void Editor::display() //7
 {
-	cout << "String: "; print(); // "/"/ with the cursor on char representing the position of the list
+	cout << "String: "; print(); 
 	cout << endl;
 	cout << "Length: " << list.size();
 }
@@ -108,14 +111,17 @@ void Editor::quit() //8
 }
 
 void Editor::print() 
-{
-	int prevPos = *it;
-	for (/*NodeList::Iterator it2*/ it = list.begin(); it != list.end(); ++it)
-	{
-		/*if(list.atIndex(*it) == cursor)*/
-		cout << *it;
+{	
+	for (NodeList::Iterator it2 = list.begin(); it2 != list.end(); ++it2)
+	{	
+		if (*it2 == *it)
+			cout << cursor;
+		cout << *it2;
+		 	
 	}
-	*it = prevPos;
+
+	if (it == list.end())
+		cout << cursor;
 }
 
 Editor::~Editor()

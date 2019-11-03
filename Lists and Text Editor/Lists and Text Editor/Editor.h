@@ -4,10 +4,8 @@
 class Editor
 {
 private:
-	//std::string word;
+
 	char cursor;
-	
-	//int wordLength;
 	NodeList list;
 	NodeList::Iterator it = list.end();
 
